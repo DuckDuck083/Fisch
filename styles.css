@@ -1,0 +1,593 @@
+:root {
+  color-scheme: dark;
+  --bg: #101923;
+  --panel: #172431;
+  --panel-2: #203345;
+  --ink: #f3f7f5;
+  --muted: #9fb2bd;
+  --line: rgba(255, 255, 255, 0.12);
+  --accent: #42d29d;
+  --accent-2: #f2c14e;
+  --danger: #ef6f6c;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: radial-gradient(circle at 20% 10%, #25485a 0, transparent 28rem), var(--bg);
+  color: var(--ink);
+}
+
+button {
+  border: 0;
+  border-radius: 8px;
+  background: #284257;
+  color: var(--ink);
+  font: inherit;
+  font-weight: 750;
+  cursor: pointer;
+  transition: transform 140ms ease, background 140ms ease, opacity 140ms ease;
+}
+
+button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  background: #365a74;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.app {
+  width: min(1420px, 100%);
+  min-height: 100vh;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(420px, 0.92fr) minmax(520px, 1.08fr);
+  gap: 0;
+}
+
+.sea-panel {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  overflow: hidden;
+  border-right: 1px solid var(--line);
+}
+
+.sky {
+  position: absolute;
+  inset: 0 0 38%;
+  background: linear-gradient(#72c6df, #e0aa70);
+}
+
+.sun {
+  position: absolute;
+  top: 9%;
+  right: 15%;
+  width: 5.5rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #ffe38d;
+  box-shadow: 0 0 4rem rgba(255, 227, 141, 0.65);
+}
+
+.cloud {
+  position: absolute;
+  width: 9rem;
+  height: 2.8rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.78);
+}
+
+.cloud::before,
+.cloud::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  background: inherit;
+}
+
+.cloud::before {
+  width: 4rem;
+  height: 4rem;
+  left: 1.4rem;
+  top: -1.7rem;
+}
+
+.cloud::after {
+  width: 5rem;
+  height: 5rem;
+  right: 1rem;
+  top: -2.4rem;
+}
+
+.cloud-a {
+  left: 8%;
+  top: 14%;
+  animation: cloud 24s linear infinite alternate;
+}
+
+.cloud-b {
+  left: 44%;
+  top: 24%;
+  transform: scale(0.72);
+  animation: cloud 32s linear infinite alternate-reverse;
+}
+
+.ocean {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  margin-top: 28vh;
+  background:
+    repeating-linear-gradient(175deg, rgba(255,255,255,0.12) 0 2px, transparent 2px 42px),
+    linear-gradient(#1b85a6, #14516e 55%, #102b43);
+  overflow: hidden;
+}
+
+.island-view {
+  --island-color: #44b8a5;
+  position: absolute;
+  left: 8%;
+  top: 14%;
+  width: 13rem;
+  height: 8rem;
+  display: grid;
+  place-items: center;
+  font-size: 5rem;
+  filter: drop-shadow(0 1rem 1.5rem rgba(0,0,0,0.28));
+}
+
+.island-view::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  bottom: 0;
+  width: 100%;
+  height: 2.8rem;
+  border-radius: 50%;
+  background: var(--island-color);
+}
+
+.boat {
+  position: absolute;
+  left: 48%;
+  top: 41%;
+  width: 13rem;
+  height: 9rem;
+  animation: bob 3s ease-in-out infinite;
+}
+
+.mast {
+  position: absolute;
+  left: 48%;
+  top: 0.4rem;
+  width: 0.35rem;
+  height: 5.5rem;
+  background: #69452b;
+}
+
+.sail {
+  position: absolute;
+  left: 51%;
+  top: 0.7rem;
+  width: 4.8rem;
+  height: 4.8rem;
+  clip-path: polygon(0 0, 100% 78%, 0 100%);
+  background: #f8f2db;
+}
+
+.hull {
+  position: absolute;
+  bottom: 1.4rem;
+  width: 100%;
+  height: 2.5rem;
+  border-radius: 0 0 5rem 5rem;
+  background: linear-gradient(90deg, #763f2d, #bd6f39 48%, #763f2d);
+}
+
+.rod-line {
+  position: absolute;
+  left: 11.6rem;
+  top: 3.1rem;
+  width: 0.12rem;
+  height: 8rem;
+  background: rgba(255,255,255,0.58);
+  transform: rotate(-17deg);
+  transform-origin: top;
+}
+
+.ripple {
+  position: absolute;
+  width: 13rem;
+  height: 2.2rem;
+  border: 2px solid rgba(255,255,255,0.22);
+  border-radius: 50%;
+  animation: ripple 2.4s ease-out infinite;
+}
+
+.ripple-a {
+  left: 48%;
+  top: 56%;
+}
+
+.ripple-b {
+  left: 24%;
+  top: 70%;
+  animation-delay: 900ms;
+}
+
+.status-strip {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--line);
+}
+
+.status-strip > div {
+  padding: 1rem;
+  background: rgba(13, 24, 33, 0.88);
+}
+
+.label {
+  display: block;
+  margin-bottom: 0.28rem;
+  color: var(--muted);
+  font-size: 0.74rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0;
+}
+
+.play-panel {
+  min-height: 100vh;
+  padding: 1.25rem;
+  background: rgba(16, 25, 35, 0.92);
+}
+
+.topbar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--line);
+}
+
+h1,
+h3,
+p {
+  margin-top: 0;
+}
+
+h1 {
+  margin-bottom: 0.35rem;
+  font-size: clamp(2rem, 4vw, 3.6rem);
+  line-height: 0.95;
+}
+
+h3 {
+  margin-bottom: 0.45rem;
+}
+
+p {
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.top-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.icon-button {
+  width: 2.65rem;
+  height: 2.65rem;
+  display: grid;
+  place-items: center;
+}
+
+.tabs {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.45rem;
+  margin: 1rem 0;
+}
+
+.tab {
+  min-height: 2.55rem;
+  padding: 0 0.45rem;
+  background: transparent;
+  border: 1px solid var(--line);
+}
+
+.tab.active {
+  background: var(--accent);
+  color: #092016;
+}
+
+.view {
+  display: none;
+}
+
+.view.active {
+  display: block;
+}
+
+.cast-row {
+  display: grid;
+  grid-template-columns: minmax(11rem, 0.6fr) 1fr;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.primary-button {
+  min-height: 4rem;
+  background: var(--accent-2);
+  color: #1d1602;
+  font-size: 1.12rem;
+}
+
+.meter,
+.progress-wrap {
+  padding: 0.85rem;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+}
+
+.bar {
+  height: 0.72rem;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.12);
+}
+
+.bar i {
+  display: block;
+  width: 0;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--accent), #9ce6d1);
+}
+
+.minigame {
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+}
+
+.catch-header,
+.progress-labels {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.8rem;
+}
+
+.track {
+  position: relative;
+  height: 4.5rem;
+  margin: 1rem 0;
+  border-radius: 8px;
+  background:
+    linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent),
+    #0f1c28;
+  overflow: hidden;
+}
+
+.sweet-zone {
+  position: absolute;
+  top: 0.6rem;
+  height: 3.3rem;
+  border-radius: 8px;
+  background: rgba(66, 210, 157, 0.32);
+  border: 1px solid rgba(66, 210, 157, 0.8);
+  box-shadow: 0 0 1.1rem rgba(66, 210, 157, 0.3);
+}
+
+.lure {
+  position: absolute;
+  top: 0.55rem;
+  width: 1.3rem;
+  height: 3.4rem;
+  border-radius: 999px;
+  background: #f7e27d;
+  border: 3px solid #392e08;
+  transform: translateX(-50%);
+}
+
+.control i {
+  background: linear-gradient(90deg, #f2c14e, #42d29d);
+}
+
+.reel-controls {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.7rem;
+  margin-top: 1rem;
+}
+
+.reel-controls button {
+  min-height: 3.2rem;
+}
+
+.hint {
+  margin: 0.85rem 0 0;
+  font-size: 0.92rem;
+}
+
+.log {
+  display: grid;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.log p {
+  margin: 0;
+  padding: 0.7rem 0.8rem;
+  border-left: 3px solid var(--accent-2);
+  border-radius: 6px;
+  background: rgba(255,255,255,0.06);
+  color: #dce8e5;
+}
+
+.grid,
+.shop-grid,
+.fish-grid,
+.achievement-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  gap: 0.8rem;
+}
+
+.island-card,
+.shop-card,
+.fish-card,
+.achievement {
+  min-height: 12rem;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+}
+
+.island-card {
+  display: grid;
+  grid-template-columns: 4rem 1fr;
+  gap: 0.85rem;
+}
+
+.island-card.selected {
+  border-color: var(--accent);
+  background: #183629;
+}
+
+.island-card.locked,
+.fish-card.unknown {
+  background: #15212d;
+}
+
+.island-emoji,
+.fish-emoji {
+  width: 4rem;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.08);
+  font-size: 2.1rem;
+}
+
+.island-card button,
+.shop-card button {
+  width: 100%;
+  min-height: 2.8rem;
+  margin-top: 0.5rem;
+}
+
+.shop-card {
+  display: grid;
+  align-content: space-between;
+}
+
+.collection-summary {
+  margin-bottom: 1rem;
+  padding: 0.9rem 1rem;
+  border-radius: 8px;
+  background: var(--panel-2);
+}
+
+.achievement.done {
+  border-color: rgba(66, 210, 157, 0.75);
+}
+
+.achievement span {
+  color: var(--accent-2);
+  font-weight: 800;
+}
+
+@keyframes bob {
+  0%, 100% {
+    transform: translateY(0) rotate(-1deg);
+  }
+  50% {
+    transform: translateY(0.55rem) rotate(1deg);
+  }
+}
+
+@keyframes ripple {
+  from {
+    transform: scale(0.72);
+    opacity: 0.8;
+  }
+  to {
+    transform: scale(1.45);
+    opacity: 0;
+  }
+}
+
+@keyframes cloud {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(4rem);
+  }
+}
+
+@media (max-width: 980px) {
+  .app {
+    grid-template-columns: 1fr;
+  }
+
+  .sea-panel {
+    position: relative;
+    height: 42vh;
+    min-height: 25rem;
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .play-panel {
+    min-height: auto;
+  }
+}
+
+@media (max-width: 620px) {
+  .play-panel {
+    padding: 0.85rem;
+  }
+
+  .topbar,
+  .catch-header {
+    display: grid;
+  }
+
+  .tabs {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .cast-row,
+  .reel-controls,
+  .status-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .island-card {
+    grid-template-columns: 1fr;
+  }
+}

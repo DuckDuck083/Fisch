@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tidebound Isles</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app">
+      <section class="sea-panel">
+        <div class="sky">
+          <div class="sun"></div>
+          <div class="cloud cloud-a"></div>
+          <div class="cloud cloud-b"></div>
+        </div>
+        <div class="ocean" id="ocean">
+          <div class="island-view" id="islandView"></div>
+          <div class="boat" id="boat">
+            <div class="mast"></div>
+            <div class="sail"></div>
+            <div class="hull"></div>
+            <div class="rod-line" id="rodLine"></div>
+          </div>
+          <div class="ripple ripple-a"></div>
+          <div class="ripple ripple-b"></div>
+        </div>
+        <div class="status-strip">
+          <div>
+            <span class="label">Island</span>
+            <strong id="currentIsland">Starter Cove</strong>
+          </div>
+          <div>
+            <span class="label">Coins</span>
+            <strong id="coins">0</strong>
+          </div>
+          <div>
+            <span class="label">Best Catch</span>
+            <strong id="bestCatch">None</strong>
+          </div>
+        </div>
+      </section>
+
+      <section class="play-panel">
+        <header class="topbar">
+          <div>
+            <h1>Tidebound Isles</h1>
+            <p id="flavorText">Cast from Starter Cove and build your way toward stranger waters.</p>
+          </div>
+          <div class="top-actions">
+            <button class="icon-button" id="saveButton" title="Save game" aria-label="Save game">💾</button>
+            <button class="icon-button" id="resetButton" title="Reset save" aria-label="Reset save">↺</button>
+          </div>
+        </header>
+
+        <div class="tabs" role="tablist" aria-label="Game views">
+          <button class="tab active" data-tab="fish" role="tab">Fish</button>
+          <button class="tab" data-tab="map" role="tab">Map</button>
+          <button class="tab" data-tab="shop" role="tab">Shop</button>
+          <button class="tab" data-tab="collection" role="tab">Collection</button>
+          <button class="tab" data-tab="achievements" role="tab">Goals</button>
+        </div>
+
+        <section class="view active" id="fishView">
+          <div class="cast-row">
+            <button class="primary-button" id="castButton">Cast Line</button>
+            <div class="meter">
+              <span>Luck</span>
+              <div class="bar"><i id="luckBar"></i></div>
+            </div>
+          </div>
+
+          <div class="minigame" id="minigame">
+            <div class="catch-header">
+              <div>
+                <span class="label">Hooked</span>
+                <strong id="hookedFish">Waiting for a bite</strong>
+              </div>
+              <div>
+                <span class="label">Tension</span>
+                <strong id="tensionText">0%</strong>
+              </div>
+            </div>
+            <div class="track" id="track">
+              <div class="sweet-zone" id="sweetZone"></div>
+              <div class="lure" id="lure"></div>
+            </div>
+            <div class="progress-wrap">
+              <div class="progress-labels">
+                <span>Control</span>
+                <span id="progressText">0%</span>
+              </div>
+              <div class="bar control"><i id="controlBar"></i></div>
+            </div>
+            <div class="reel-controls">
+              <button id="leftButton">◀ Pull Left</button>
+              <button id="rightButton">Pull Right ▶</button>
+            </div>
+            <p class="hint" id="fishHint">Strike when the bobber drops, then keep the lure inside the glowing fish zone. Use Space, buttons, A/D, or arrow keys.</p>
+          </div>
+
+          <div class="log" id="log"></div>
+        </section>
+
+        <section class="view" id="mapView">
+          <div class="grid" id="islandGrid"></div>
+        </section>
+
+        <section class="view" id="shopView">
+          <div class="shop-grid" id="shopGrid"></div>
+        </section>
+
+        <section class="view" id="collectionView">
+          <div class="collection-summary" id="collectionSummary"></div>
+          <div class="fish-grid" id="fishGrid"></div>
+        </section>
+
+        <section class="view" id="achievementsView">
+          <div class="achievement-grid" id="achievementGrid"></div>
+        </section>
+      </section>
+    </main>
+
+    <script src="game.js"></script>
+  </body>
+</html>
