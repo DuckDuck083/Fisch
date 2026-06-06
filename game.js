@@ -6,7 +6,7 @@ const islands = [
     name: "Starter Cove",
     cost: 0,
     range: 1,
-    mark: "CO",
+    mark: "\u{1F3DD}\u{FE0F}",
     description: "Calm shallows with friendly fish and clear water.",
     color: "#44b8a5",
     fish: ["minnow", "snapper", "crab", "glowfin"]
@@ -16,7 +16,7 @@ const islands = [
     name: "Kelpwood Atoll",
     cost: 450,
     range: 2,
-    mark: "KW",
+    mark: "\u{1F33F}",
     description: "A green maze where quick fish dart between kelp stalks.",
     color: "#2f9468",
     fish: ["kelp-eel", "mossback", "tangleray", "emerald-tuna"]
@@ -26,18 +26,29 @@ const islands = [
     name: "Corsair Key",
     cost: 900,
     range: 2,
-    mark: "PX",
+    mark: "\u{1F3F4}\u{200D}\u{2620}\u{FE0F}",
     pirate: true,
     description: "A black-market dock with cursed catches, raiders, and buried loot.",
     color: "#8d6a34",
     fish: ["parrotfish", "cutlass-eel", "powder-keg-puffer", "captains-curse"]
   },
   {
+    id: "wreck",
+    name: "Shipwreck Spire",
+    cost: 1700,
+    range: 3,
+    mark: "\u{2693}",
+    pirate: true,
+    description: "Broken masts, sunken treasure, and fish hiding in cannon holes.",
+    color: "#6f7b83",
+    fish: ["barnacle-grouper", "ghost-mackerel", "coin-snapper", "kraken-child"]
+  },
+  {
     id: "volcano",
     name: "Emberhook Isle",
     cost: 1300,
     range: 3,
-    mark: "EM",
+    mark: "\u{1F30B}",
     description: "Hot currents, heavy bites, and rare molten catches.",
     color: "#d45d3a",
     fish: ["ash-carp", "cinderfin", "lava-ray", "obsidian-shark"]
@@ -47,10 +58,20 @@ const islands = [
     name: "Frostwake Fjord",
     cost: 2800,
     range: 4,
-    mark: "FR",
+    mark: "\u{1F9CA}",
     description: "Slippery water where patient anglers find glittering giants.",
     color: "#78bfe9",
     fish: ["snowflake-smelt", "ice-pike", "aurora-cod", "crystal-whale"]
+  },
+  {
+    id: "siren",
+    name: "Siren Reef",
+    cost: 3900,
+    range: 4,
+    mark: "\u{1FAF5}",
+    description: "Pink coral, singing currents, and strange glittering fish.",
+    color: "#d66aa6",
+    fish: ["coral-clown", "harpfin", "siren-jelly", "pearl-serpent"]
   },
   {
     id: "void",
@@ -58,7 +79,7 @@ const islands = [
     cost: 0,
     range: 5,
     secret: true,
-    mark: "??",
+    mark: "\u{1F311}",
     description: "A hidden night-water island that appears only to proven explorers.",
     color: "#6b5bd6",
     fish: ["starling-fish", "phase-squid", "eclipse-marlin", "ancient-leviathan"]
@@ -66,31 +87,46 @@ const islands = [
 ];
 
 const fish = {
-  "minnow": { name: "Sunny Minnow", rarity: "Common", value: 18, difficulty: 0.75, size: [1, 4], mark: "><>" },
-  "snapper": { name: "Red Snapper", rarity: "Common", value: 32, difficulty: 0.95, size: [3, 12], mark: "><>" },
-  "crab": { name: "Pocket Crab", rarity: "Uncommon", value: 55, difficulty: 1.1, size: [1, 6], mark: "[c]" },
-  "glowfin": { name: "Glowfin Koi", rarity: "Rare", value: 130, difficulty: 1.45, size: [5, 18], mark: "**" },
-  "kelp-eel": { name: "Kelp Eel", rarity: "Common", value: 75, difficulty: 1.25, size: [8, 24], mark: "~~" },
-  "mossback": { name: "Mossback Bass", rarity: "Uncommon", value: 120, difficulty: 1.45, size: [12, 36], mark: "><>" },
-  "tangleray": { name: "Tangleray", rarity: "Rare", value: 230, difficulty: 1.8, size: [24, 70], mark: "<=>" },
-  "emerald-tuna": { name: "Emerald Tuna", rarity: "Legendary", value: 520, difficulty: 2.2, size: [45, 140], mark: "$$" },
-  "parrotfish": { name: "Parrotfish Raider", rarity: "Common", value: 105, difficulty: 1.35, size: [6, 22], mark: "PR" },
-  "cutlass-eel": { name: "Cutlass Eel", rarity: "Uncommon", value: 190, difficulty: 1.75, size: [18, 60], mark: "/>" },
-  "powder-keg-puffer": { name: "Powder Keg Puffer", rarity: "Rare", value: 390, difficulty: 2.15, size: [10, 36], mark: "BO" },
-  "captains-curse": { name: "Captain's Curse", rarity: "Legendary", value: 950, difficulty: 2.7, size: [40, 130], mark: "XX" },
-  "ash-carp": { name: "Ash Carp", rarity: "Common", value: 150, difficulty: 1.55, size: [14, 42], mark: "><>" },
-  "cinderfin": { name: "Cinderfin", rarity: "Uncommon", value: 250, difficulty: 1.85, size: [22, 65], mark: "!!" },
-  "lava-ray": { name: "Lava Ray", rarity: "Rare", value: 470, difficulty: 2.25, size: [60, 180], mark: "<=>" },
-  "obsidian-shark": { name: "Obsidian Shark", rarity: "Mythic", value: 1100, difficulty: 2.8, size: [130, 420], mark: "SH" },
-  "snowflake-smelt": { name: "Snowflake Smelt", rarity: "Common", value: 240, difficulty: 1.75, size: [4, 14], mark: "*>" },
-  "ice-pike": { name: "Ice Pike", rarity: "Uncommon", value: 380, difficulty: 2.05, size: [30, 95], mark: "><>" },
-  "aurora-cod": { name: "Aurora Cod", rarity: "Rare", value: 760, difficulty: 2.55, size: [55, 150], mark: "AU" },
-  "crystal-whale": { name: "Crystal Whale", rarity: "Legendary", value: 1800, difficulty: 3.1, size: [500, 1400], mark: "WH" },
-  "starling-fish": { name: "Starling Fish", rarity: "Rare", value: 900, difficulty: 2.45, size: [10, 40], mark: "**" },
-  "phase-squid": { name: "Phase Squid", rarity: "Legendary", value: 1500, difficulty: 2.9, size: [45, 130], mark: "SQ" },
-  "eclipse-marlin": { name: "Eclipse Marlin", rarity: "Mythic", value: 3200, difficulty: 3.35, size: [180, 520], mark: "EC" },
-  "ancient-leviathan": { name: "Ancient Leviathan", rarity: "Secret", value: 9000, difficulty: 4.0, size: [1200, 3200], mark: "LV" }
+  "minnow": { name: "Sunny Minnow", rarity: "Common", value: 18, difficulty: 0.75, size: [1, 4], mark: "\u{1F41F}" },
+  "snapper": { name: "Red Snapper", rarity: "Common", value: 32, difficulty: 0.95, size: [3, 12], mark: "\u{1F420}" },
+  "crab": { name: "Pocket Crab", rarity: "Uncommon", value: 55, difficulty: 1.1, size: [1, 6], mark: "\u{1F980}" },
+  "glowfin": { name: "Glowfin Koi", rarity: "Rare", value: 130, difficulty: 1.45, size: [5, 18], mark: "\u{2728}" },
+  "kelp-eel": { name: "Kelp Eel", rarity: "Common", value: 75, difficulty: 1.25, size: [8, 24], mark: "\u{1F40D}" },
+  "mossback": { name: "Mossback Bass", rarity: "Uncommon", value: 120, difficulty: 1.45, size: [12, 36], mark: "\u{1F41F}" },
+  "tangleray": { name: "Tangleray", rarity: "Rare", value: 230, difficulty: 1.8, size: [24, 70], mark: "\u{1FABC}" },
+  "emerald-tuna": { name: "Emerald Tuna", rarity: "Legendary", value: 520, difficulty: 2.2, size: [45, 140], mark: "\u{1F49A}" },
+  "parrotfish": { name: "Parrotfish Raider", rarity: "Common", value: 105, difficulty: 1.35, size: [6, 22], mark: "\u{1F99C}" },
+  "cutlass-eel": { name: "Cutlass Eel", rarity: "Uncommon", value: 190, difficulty: 1.75, size: [18, 60], mark: "\u{1F5E1}\u{FE0F}" },
+  "powder-keg-puffer": { name: "Powder Keg Puffer", rarity: "Rare", value: 390, difficulty: 2.15, size: [10, 36], mark: "\u{1F4A3}" },
+  "captains-curse": { name: "Captain's Curse", rarity: "Legendary", value: 950, difficulty: 2.7, size: [40, 130], mark: "\u{1F480}" },
+  "barnacle-grouper": { name: "Barnacle Grouper", rarity: "Common", value: 180, difficulty: 1.65, size: [24, 80], mark: "\u{1FAA8}" },
+  "ghost-mackerel": { name: "Ghost Mackerel", rarity: "Uncommon", value: 310, difficulty: 2.0, size: [12, 42], mark: "\u{1F47B}" },
+  "coin-snapper": { name: "Coin Snapper", rarity: "Rare", value: 620, difficulty: 2.35, size: [16, 55], mark: "\u{1FA99}" },
+  "kraken-child": { name: "Kraken Child", rarity: "Mythic", value: 1600, difficulty: 3.05, size: [90, 260], mark: "\u{1F419}" },
+  "ash-carp": { name: "Ash Carp", rarity: "Common", value: 150, difficulty: 1.55, size: [14, 42], mark: "\u{1F41F}" },
+  "cinderfin": { name: "Cinderfin", rarity: "Uncommon", value: 250, difficulty: 1.85, size: [22, 65], mark: "\u{1F525}" },
+  "lava-ray": { name: "Lava Ray", rarity: "Rare", value: 470, difficulty: 2.25, size: [60, 180], mark: "\u{1F336}\u{FE0F}" },
+  "obsidian-shark": { name: "Obsidian Shark", rarity: "Mythic", value: 1100, difficulty: 2.8, size: [130, 420], mark: "\u{1F988}" },
+  "snowflake-smelt": { name: "Snowflake Smelt", rarity: "Common", value: 240, difficulty: 1.75, size: [4, 14], mark: "\u{2744}\u{FE0F}" },
+  "ice-pike": { name: "Ice Pike", rarity: "Uncommon", value: 380, difficulty: 2.05, size: [30, 95], mark: "\u{1F41F}" },
+  "aurora-cod": { name: "Aurora Cod", rarity: "Rare", value: 760, difficulty: 2.55, size: [55, 150], mark: "\u{1F308}" },
+  "crystal-whale": { name: "Crystal Whale", rarity: "Legendary", value: 1800, difficulty: 3.1, size: [500, 1400], mark: "\u{1F40B}" },
+  "coral-clown": { name: "Coral Clownfish", rarity: "Common", value: 290, difficulty: 1.9, size: [2, 8], mark: "\u{1F420}" },
+  "harpfin": { name: "Harpfin", rarity: "Uncommon", value: 520, difficulty: 2.25, size: [8, 28], mark: "\u{1F3B5}" },
+  "siren-jelly": { name: "Siren Jelly", rarity: "Rare", value: 980, difficulty: 2.75, size: [6, 30], mark: "\u{1FABC}" },
+  "pearl-serpent": { name: "Pearl Serpent", rarity: "Legendary", value: 2100, difficulty: 3.2, size: [80, 240], mark: "\u{1F9AA}" },
+  "starling-fish": { name: "Starling Fish", rarity: "Rare", value: 900, difficulty: 2.45, size: [10, 40], mark: "\u{1F31F}" },
+  "phase-squid": { name: "Phase Squid", rarity: "Legendary", value: 1500, difficulty: 2.9, size: [45, 130], mark: "\u{1F991}" },
+  "eclipse-marlin": { name: "Eclipse Marlin", rarity: "Mythic", value: 3200, difficulty: 3.35, size: [180, 520], mark: "\u{2600}\u{FE0F}" },
+  "ancient-leviathan": { name: "Ancient Leviathan", rarity: "Secret", value: 9000, difficulty: 4.0, size: [1200, 3200], mark: "\u{1F451}" }
 };
+
+const pirateEvents = [
+  { name: "Black Flag Ambush", win: "You outsailed a raider sloop", lose: "A raider sloop boarded your deck" },
+  { name: "Buried Map", win: "A soaked treasure map led to bonus coins", lose: "The map was a fake and cost you time" },
+  { name: "Cannon Smoke", win: "You dodged cannon fire and grabbed floating loot", lose: "Cannon fire scattered part of the catch" },
+  { name: "Cursed Chest", win: "The cursed chest opened for you", lose: "The cursed chest demanded a coin offering" }
+];
 
 const upgrades = {
   rod: [
@@ -121,8 +157,11 @@ const achievements = [
   { id: "ten", name: "Busy Dock", text: "Catch 10 fish.", test: s => s.stats.catches >= 10, reward: 180 },
   { id: "rare", name: "Rare Taste", text: "Catch any Rare or better fish.", test: s => hasRarity(s, ["Rare", "Legendary", "Mythic", "Secret"]), reward: 250 },
   { id: "pirate", name: "Black Flag Bounty", text: "Survive 3 pirate raids.", test: s => s.stats.raids >= 3, reward: 650 },
+  { id: "wreck", name: "Wreck Diver", text: "Unlock Shipwreck Spire.", test: s => s.unlockedIslands.includes("wreck"), reward: 500 },
+  { id: "siren", name: "Reef Listener", text: "Unlock Siren Reef.", test: s => s.unlockedIslands.includes("siren"), reward: 900 },
+  { id: "kraken", name: "Small Kraken Problem", text: "Catch the Kraken Child.", test: s => Boolean(s.collection["kraken-child"]), reward: 1800 },
   { id: "explorer", name: "Island Hopper", text: "Unlock 3 islands.", test: s => s.unlockedIslands.length >= 3, reward: 400 },
-  { id: "collector", name: "Aquarium Brain", text: "Discover 12 fish species.", test: s => Object.keys(s.collection).length >= 12, reward: 700 },
+  { id: "collector", name: "Aquarium Brain", text: "Discover 16 fish species.", test: s => Object.keys(s.collection).filter(id => fish[id]).length >= 16, reward: 900 },
   { id: "secret", name: "Moon Current", text: "Find the secret island.", test: s => s.unlockedIslands.includes("void"), reward: 1200 },
   { id: "leviathan", name: "Old Deep", text: "Catch the Ancient Leviathan.", test: s => Boolean(s.collection["ancient-leviathan"]), reward: 5000 }
 ];
@@ -410,17 +449,20 @@ function finishCatch(success) {
 
 function pirateEvent(basePayout) {
   const island = currentIsland();
-  if (!island.pirate || Math.random() > 0.24) return { payout: basePayout, text: "" };
+  if (!island.pirate || Math.random() > 0.32) return { payout: basePayout, text: "" };
 
   state.stats.raids += 1;
+  const raid = pirateEvents[Math.floor(Math.random() * pirateEvents.length)];
   const win = Math.random() < 0.58 + state.upgradeLevels.boat * 0.06;
   if (win) {
-    const bonus = 90 + Math.round(Math.random() * 180);
-    return { payout: basePayout + bonus, text: ` You drove off pirates and found ${bonus} bonus coins.` };
+    const bonus = 120 + Math.round(Math.random() * 260);
+    addLog(`${raid.name}: ${raid.win}. +${bonus} coins.`);
+    return { payout: basePayout + bonus, text: ` Pirate bonus: ${bonus} coins.` };
   }
 
-  const loss = Math.min(basePayout, 60 + Math.round(Math.random() * 120));
-  return { payout: Math.max(0, basePayout - loss), text: ` Pirates raided the deck and stole ${loss} coins.` };
+  const loss = Math.min(basePayout, 70 + Math.round(Math.random() * 150));
+  addLog(`${raid.name}: ${raid.lose}. -${loss} coins.`);
+  return { payout: Math.max(0, basePayout - loss), text: ` Pirate loss: ${loss} coins.` };
 }
 
 function randomSize(min, max) {
