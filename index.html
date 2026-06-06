@@ -48,22 +48,22 @@
             <p id="flavorText">Cast from Starter Cove and build your way toward stranger waters.</p>
           </div>
           <div class="top-actions">
-            <button class="icon-button" id="saveButton" title="Save game" aria-label="Save game">💾</button>
-            <button class="icon-button" id="resetButton" title="Reset save" aria-label="Reset save">↺</button>
+            <button class="icon-button" id="saveButton" title="Save game (S)" aria-label="Save game">S</button>
+            <button class="icon-button" id="resetButton" title="Reset save" aria-label="Reset save">R</button>
           </div>
         </header>
 
         <div class="tabs" role="tablist" aria-label="Game views">
-          <button class="tab active" data-tab="fish" role="tab">Fish</button>
-          <button class="tab" data-tab="map" role="tab">Map</button>
-          <button class="tab" data-tab="shop" role="tab">Shop</button>
-          <button class="tab" data-tab="collection" role="tab">Collection</button>
-          <button class="tab" data-tab="achievements" role="tab">Goals</button>
+          <button class="tab active" data-tab="fish" role="tab">F Fish</button>
+          <button class="tab" data-tab="map" role="tab">M Map</button>
+          <button class="tab" data-tab="shop" role="tab">B Shop</button>
+          <button class="tab" data-tab="collection" role="tab">L Collection</button>
+          <button class="tab" data-tab="achievements" role="tab">G Goals</button>
         </div>
 
         <section class="view active" id="fishView">
           <div class="cast-row">
-            <button class="primary-button" id="castButton">Cast Line</button>
+            <button class="primary-button" id="castButton">C: Cast Line</button>
             <div class="meter">
               <span>Luck</span>
               <div class="bar"><i id="luckBar"></i></div>
@@ -73,8 +73,8 @@
           <div class="minigame" id="minigame">
             <div class="catch-header">
               <div>
-                <span class="label">Hooked</span>
-                <strong id="hookedFish">Waiting for a bite</strong>
+                <span class="label">Action</span>
+                <strong id="hookedFish">Press C to cast</strong>
               </div>
               <div>
                 <span class="label">Tension</span>
@@ -87,16 +87,16 @@
             </div>
             <div class="progress-wrap">
               <div class="progress-labels">
-                <span>Control</span>
+                <span>Catch Progress</span>
                 <span id="progressText">0%</span>
               </div>
               <div class="bar control"><i id="controlBar"></i></div>
             </div>
             <div class="reel-controls">
-              <button id="leftButton">◀ Pull Left</button>
-              <button id="rightButton">Pull Right ▶</button>
+              <button id="leftButton">A: Move Left</button>
+              <button id="rightButton">D: Move Right</button>
             </div>
-            <p class="hint" id="fishHint">Strike when the bobber drops, then keep the lure inside the glowing fish zone. Use Space, buttons, A/D, or arrow keys.</p>
+            <p class="hint" id="fishHint">C casts. Space hooks when HOOK NOW appears. A/D moves the green reel zone over the fish marker.</p>
           </div>
 
           <div class="log" id="log"></div>

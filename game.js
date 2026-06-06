@@ -5,8 +5,9 @@ const islands = [
     id: "starter",
     name: "Starter Cove",
     cost: 0,
-    emoji: "🏝️",
-    description: "Calm shallows with friendly fish and easy reels.",
+    range: 1,
+    mark: "CO",
+    description: "Calm shallows with friendly fish and clear water.",
     color: "#44b8a5",
     fish: ["minnow", "snapper", "crab", "glowfin"]
   },
@@ -14,16 +15,29 @@ const islands = [
     id: "kelp",
     name: "Kelpwood Atoll",
     cost: 450,
-    emoji: "🌿",
+    range: 2,
+    mark: "KW",
     description: "A green maze where quick fish dart between kelp stalks.",
     color: "#2f9468",
     fish: ["kelp-eel", "mossback", "tangleray", "emerald-tuna"]
   },
   {
+    id: "pirate",
+    name: "Corsair Key",
+    cost: 900,
+    range: 2,
+    mark: "PX",
+    pirate: true,
+    description: "A black-market dock with cursed catches, raiders, and buried loot.",
+    color: "#8d6a34",
+    fish: ["parrotfish", "cutlass-eel", "powder-keg-puffer", "captains-curse"]
+  },
+  {
     id: "volcano",
     name: "Emberhook Isle",
     cost: 1300,
-    emoji: "🌋",
+    range: 3,
+    mark: "EM",
     description: "Hot currents, heavy bites, and rare molten catches.",
     color: "#d45d3a",
     fish: ["ash-carp", "cinderfin", "lava-ray", "obsidian-shark"]
@@ -32,7 +46,8 @@ const islands = [
     id: "frost",
     name: "Frostwake Fjord",
     cost: 2800,
-    emoji: "🧊",
+    range: 4,
+    mark: "FR",
     description: "Slippery water where patient anglers find glittering giants.",
     color: "#78bfe9",
     fish: ["snowflake-smelt", "ice-pike", "aurora-cod", "crystal-whale"]
@@ -41,8 +56,9 @@ const islands = [
     id: "void",
     name: "Moonless Shoal",
     cost: 0,
+    range: 5,
     secret: true,
-    emoji: "🌑",
+    mark: "??",
     description: "A hidden night-water island that appears only to proven explorers.",
     color: "#6b5bd6",
     fish: ["starling-fish", "phase-squid", "eclipse-marlin", "ancient-leviathan"]
@@ -50,46 +66,53 @@ const islands = [
 ];
 
 const fish = {
-  "minnow": { name: "Sunny Minnow", rarity: "Common", value: 18, difficulty: 0.75, size: [1, 4], emoji: "🐟" },
-  "snapper": { name: "Red Snapper", rarity: "Common", value: 32, difficulty: 0.95, size: [3, 12], emoji: "🐠" },
-  "crab": { name: "Pocket Crab", rarity: "Uncommon", value: 55, difficulty: 1.1, size: [1, 6], emoji: "🦀" },
-  "glowfin": { name: "Glowfin Koi", rarity: "Rare", value: 130, difficulty: 1.45, size: [5, 18], emoji: "✨" },
-  "kelp-eel": { name: "Kelp Eel", rarity: "Common", value: 75, difficulty: 1.25, size: [8, 24], emoji: "🐍" },
-  "mossback": { name: "Mossback Bass", rarity: "Uncommon", value: 120, difficulty: 1.45, size: [12, 36], emoji: "🐟" },
-  "tangleray": { name: "Tangleray", rarity: "Rare", value: 230, difficulty: 1.8, size: [24, 70], emoji: "🪽" },
-  "emerald-tuna": { name: "Emerald Tuna", rarity: "Legendary", value: 520, difficulty: 2.2, size: [45, 140], emoji: "💚" },
-  "ash-carp": { name: "Ash Carp", rarity: "Common", value: 150, difficulty: 1.55, size: [14, 42], emoji: "🐟" },
-  "cinderfin": { name: "Cinderfin", rarity: "Uncommon", value: 250, difficulty: 1.85, size: [22, 65], emoji: "🔥" },
-  "lava-ray": { name: "Lava Ray", rarity: "Rare", value: 470, difficulty: 2.25, size: [60, 180], emoji: "🌶️" },
-  "obsidian-shark": { name: "Obsidian Shark", rarity: "Mythic", value: 1100, difficulty: 2.8, size: [130, 420], emoji: "🦈" },
-  "snowflake-smelt": { name: "Snowflake Smelt", rarity: "Common", value: 240, difficulty: 1.75, size: [4, 14], emoji: "❄️" },
-  "ice-pike": { name: "Ice Pike", rarity: "Uncommon", value: 380, difficulty: 2.05, size: [30, 95], emoji: "🐟" },
-  "aurora-cod": { name: "Aurora Cod", rarity: "Rare", value: 760, difficulty: 2.55, size: [55, 150], emoji: "🌈" },
-  "crystal-whale": { name: "Crystal Whale", rarity: "Legendary", value: 1800, difficulty: 3.1, size: [500, 1400], emoji: "🐋" },
-  "starling-fish": { name: "Starling Fish", rarity: "Rare", value: 900, difficulty: 2.45, size: [10, 40], emoji: "🌟" },
-  "phase-squid": { name: "Phase Squid", rarity: "Legendary", value: 1500, difficulty: 2.9, size: [45, 130], emoji: "🦑" },
-  "eclipse-marlin": { name: "Eclipse Marlin", rarity: "Mythic", value: 3200, difficulty: 3.35, size: [180, 520], emoji: "☀️" },
-  "ancient-leviathan": { name: "Ancient Leviathan", rarity: "Secret", value: 9000, difficulty: 4.0, size: [1200, 3200], emoji: "👑" }
+  "minnow": { name: "Sunny Minnow", rarity: "Common", value: 18, difficulty: 0.75, size: [1, 4], mark: "><>" },
+  "snapper": { name: "Red Snapper", rarity: "Common", value: 32, difficulty: 0.95, size: [3, 12], mark: "><>" },
+  "crab": { name: "Pocket Crab", rarity: "Uncommon", value: 55, difficulty: 1.1, size: [1, 6], mark: "[c]" },
+  "glowfin": { name: "Glowfin Koi", rarity: "Rare", value: 130, difficulty: 1.45, size: [5, 18], mark: "**" },
+  "kelp-eel": { name: "Kelp Eel", rarity: "Common", value: 75, difficulty: 1.25, size: [8, 24], mark: "~~" },
+  "mossback": { name: "Mossback Bass", rarity: "Uncommon", value: 120, difficulty: 1.45, size: [12, 36], mark: "><>" },
+  "tangleray": { name: "Tangleray", rarity: "Rare", value: 230, difficulty: 1.8, size: [24, 70], mark: "<=>" },
+  "emerald-tuna": { name: "Emerald Tuna", rarity: "Legendary", value: 520, difficulty: 2.2, size: [45, 140], mark: "$$" },
+  "parrotfish": { name: "Parrotfish Raider", rarity: "Common", value: 105, difficulty: 1.35, size: [6, 22], mark: "PR" },
+  "cutlass-eel": { name: "Cutlass Eel", rarity: "Uncommon", value: 190, difficulty: 1.75, size: [18, 60], mark: "/>" },
+  "powder-keg-puffer": { name: "Powder Keg Puffer", rarity: "Rare", value: 390, difficulty: 2.15, size: [10, 36], mark: "BO" },
+  "captains-curse": { name: "Captain's Curse", rarity: "Legendary", value: 950, difficulty: 2.7, size: [40, 130], mark: "XX" },
+  "ash-carp": { name: "Ash Carp", rarity: "Common", value: 150, difficulty: 1.55, size: [14, 42], mark: "><>" },
+  "cinderfin": { name: "Cinderfin", rarity: "Uncommon", value: 250, difficulty: 1.85, size: [22, 65], mark: "!!" },
+  "lava-ray": { name: "Lava Ray", rarity: "Rare", value: 470, difficulty: 2.25, size: [60, 180], mark: "<=>" },
+  "obsidian-shark": { name: "Obsidian Shark", rarity: "Mythic", value: 1100, difficulty: 2.8, size: [130, 420], mark: "SH" },
+  "snowflake-smelt": { name: "Snowflake Smelt", rarity: "Common", value: 240, difficulty: 1.75, size: [4, 14], mark: "*>" },
+  "ice-pike": { name: "Ice Pike", rarity: "Uncommon", value: 380, difficulty: 2.05, size: [30, 95], mark: "><>" },
+  "aurora-cod": { name: "Aurora Cod", rarity: "Rare", value: 760, difficulty: 2.55, size: [55, 150], mark: "AU" },
+  "crystal-whale": { name: "Crystal Whale", rarity: "Legendary", value: 1800, difficulty: 3.1, size: [500, 1400], mark: "WH" },
+  "starling-fish": { name: "Starling Fish", rarity: "Rare", value: 900, difficulty: 2.45, size: [10, 40], mark: "**" },
+  "phase-squid": { name: "Phase Squid", rarity: "Legendary", value: 1500, difficulty: 2.9, size: [45, 130], mark: "SQ" },
+  "eclipse-marlin": { name: "Eclipse Marlin", rarity: "Mythic", value: 3200, difficulty: 3.35, size: [180, 520], mark: "EC" },
+  "ancient-leviathan": { name: "Ancient Leviathan", rarity: "Secret", value: 9000, difficulty: 4.0, size: [1200, 3200], mark: "LV" }
 };
 
 const upgrades = {
   rod: [
     { name: "Twig Rod", cost: 0, power: 1, control: 1, text: "A starter rod with honest wobble." },
-    { name: "Carbon Rod", cost: 300, power: 1.18, control: 1.12, text: "More control and faster progress." },
-    { name: "Storm Rod", cost: 950, power: 1.42, control: 1.28, text: "Cuts through wild fish movement." },
-    { name: "Astral Rod", cost: 2600, power: 1.75, control: 1.55, text: "Turns impossible catches into fair fights." }
+    { name: "Carbon Rod", cost: 300, power: 1.18, control: 1.12, text: "A wider reel zone and better catch speed." },
+    { name: "Storm Rod", cost: 950, power: 1.42, control: 1.28, text: "Keeps up with fish bursts." },
+    { name: "Astral Rod", cost: 2600, power: 1.75, control: 1.55, text: "Turns impossible catches into fair fights." },
+    { name: "Captain's Harpoon", cost: 5200, power: 2.05, control: 1.72, text: "A pirate-forged rod with brutal control." }
   ],
   boat: [
     { name: "Rowboat", cost: 0, range: 1, speed: 1, text: "Enough to reach nearby coves." },
-    { name: "Skiff", cost: 500, range: 2, speed: 1.12, text: "Unlocks farther waters." },
-    { name: "Wavecutter", cost: 1500, range: 3, speed: 1.25, text: "Built for volcanic and icy routes." },
-    { name: "Moonrunner", cost: 4200, range: 4, speed: 1.45, text: "Can follow secret currents." }
+    { name: "Skiff", cost: 500, range: 2, speed: 1.08, text: "Unlocks nearby island routes." },
+    { name: "Wavecutter", cost: 1500, range: 3, speed: 1.16, text: "Built for volcanic routes." },
+    { name: "Moonrunner", cost: 4200, range: 4, speed: 1.25, text: "Can follow strange currents." },
+    { name: "Black Flag Galleon", cost: 7600, range: 5, speed: 1.35, text: "A pirate ship that can chase secret waters." }
   ],
   bait: [
     { name: "Bread Bait", cost: 0, luck: 1, text: "Simple bait for simple bites." },
     { name: "Shrimp Mix", cost: 240, luck: 1.2, text: "Better odds for uncommon catches." },
     { name: "Glow Worms", cost: 850, luck: 1.45, text: "Rare fish notice the shimmer." },
-    { name: "Meteor Chum", cost: 2300, luck: 1.85, text: "Draws legends from deep water." }
+    { name: "Meteor Chum", cost: 2300, luck: 1.85, text: "Draws legends from deep water." },
+    { name: "Cursed Doubloons", cost: 5000, luck: 2.25, text: "Pirate bait that tempts mythic fish." }
   ]
 };
 
@@ -97,6 +120,7 @@ const achievements = [
   { id: "first", name: "First Splash", text: "Catch your first fish.", test: s => s.stats.catches >= 1, reward: 60 },
   { id: "ten", name: "Busy Dock", text: "Catch 10 fish.", test: s => s.stats.catches >= 10, reward: 180 },
   { id: "rare", name: "Rare Taste", text: "Catch any Rare or better fish.", test: s => hasRarity(s, ["Rare", "Legendary", "Mythic", "Secret"]), reward: 250 },
+  { id: "pirate", name: "Black Flag Bounty", text: "Survive 3 pirate raids.", test: s => s.stats.raids >= 3, reward: 650 },
   { id: "explorer", name: "Island Hopper", text: "Unlock 3 islands.", test: s => s.unlockedIslands.length >= 3, reward: 400 },
   { id: "collector", name: "Aquarium Brain", text: "Discover 12 fish species.", test: s => Object.keys(s.collection).length >= 12, reward: 700 },
   { id: "secret", name: "Moon Current", text: "Find the secret island.", test: s => s.unlockedIslands.includes("void"), reward: 1200 },
@@ -110,8 +134,8 @@ const defaultState = {
   upgradeLevels: { rod: 0, boat: 0, bait: 0 },
   collection: {},
   achievements: {},
-  stats: { catches: 0, casts: 0, earned: 0, bestValue: 0, bestName: "None" },
-  log: ["Welcome to Tidebound Isles. Cast when ready."]
+  stats: { catches: 0, casts: 0, earned: 0, bestValue: 0, bestName: "None", raids: 0 },
+  log: ["Welcome to Tidebound Isles. Press C to cast."]
 };
 
 let state = load();
@@ -128,7 +152,6 @@ const els = {
   bestCatch: $("#bestCatch"),
   flavorText: $("#flavorText"),
   islandView: $("#islandView"),
-  boat: $("#boat"),
   castButton: $("#castButton"),
   hookedFish: $("#hookedFish"),
   tensionText: $("#tensionText"),
@@ -172,7 +195,7 @@ function save() {
 }
 
 function currentIsland() {
-  return islands.find(item => item.id === state.island);
+  return islands.find(item => item.id === state.island) || islands[0];
 }
 
 function currentUpgrade(type) {
@@ -180,7 +203,7 @@ function currentUpgrade(type) {
 }
 
 function hasRarity(saveState, rarities) {
-  return Object.keys(saveState.collection).some(id => rarities.includes(fish[id].rarity));
+  return Object.keys(saveState.collection).some(id => fish[id] && rarities.includes(fish[id].rarity));
 }
 
 function addLog(message) {
@@ -210,19 +233,18 @@ function castLine() {
   if (activeGame || biteGame) return;
 
   state.stats.casts += 1;
-  const id = weightedFish();
-  const target = fish[id];
+  const fishId = weightedFish();
+  const target = fish[fishId];
+  const wait = 0.75 + Math.random() * 1.15;
 
   biteGame = {
-    fishId: id,
+    fishId,
     timer: 0,
-    biteAt: 0.8 + Math.random() * 1.4,
-    strikeWindow: Math.max(0.42, 0.88 - target.difficulty * 0.09),
-    struck: false
+    biteAt: wait,
+    hookWindow: Math.max(0.65, 1.15 - target.difficulty * 0.08)
   };
 
-  els.hookedFish.textContent = "Watching the bobber";
-  addLog("Line cast. Strike when the bobber drops.");
+  addLog("Cast out. Wait for HOOK NOW, then press Space.");
   render();
 }
 
@@ -230,12 +252,8 @@ function tick(now) {
   const dt = Math.min(0.05, (now - lastTick) / 1000);
   lastTick = now;
 
-  if (activeGame) {
-    updateFishing(dt, now);
-  }
-  if (biteGame) {
-    updateBite(dt);
-  }
+  if (biteGame) updateBite(dt);
+  if (activeGame) updateFishing(dt, now);
 
   requestAnimationFrame(tick);
 }
@@ -243,38 +261,40 @@ function tick(now) {
 function updateBite(dt) {
   biteGame.timer += dt;
   const target = fish[biteGame.fishId];
-  const untilBite = biteGame.biteAt - biteGame.timer;
-  const missed = biteGame.timer > biteGame.biteAt + biteGame.strikeWindow;
+  const timeToBite = biteGame.biteAt - biteGame.timer;
+  const hookTime = biteGame.timer - biteGame.biteAt;
 
-  if (untilBite > 0) {
-    els.hookedFish.textContent = `Bobber still... ${untilBite.toFixed(1)}s`;
+  if (timeToBite > 0) {
+    els.hookedFish.textContent = `Waiting... ${timeToBite.toFixed(1)}s`;
+    els.tensionText.textContent = "Ready";
     els.progressText.textContent = "Wait";
-    els.controlBar.style.width = `${Math.max(0, 100 - untilBite * 45)}%`;
-  } else {
-    els.hookedFish.textContent = `Bite! Strike now for ${target.name}`;
-    els.progressText.textContent = "Strike";
-    els.controlBar.style.width = `${Math.max(0, 100 - (biteGame.timer - biteGame.biteAt) / biteGame.strikeWindow * 100)}%`;
+    els.controlBar.style.width = `${Math.min(95, biteGame.timer / biteGame.biteAt * 100)}%`;
+    return;
   }
 
-  if (missed) {
-    addLog(`${target.name} stole the bait. Strike faster next time.`);
+  els.hookedFish.textContent = `HOOK NOW: ${target.name}`;
+  els.tensionText.textContent = "Space";
+  els.progressText.textContent = "Hook";
+  els.controlBar.style.width = `${Math.max(0, 100 - hookTime / biteGame.hookWindow * 100)}%`;
+
+  if (hookTime > biteGame.hookWindow) {
+    addLog(`${target.name} stole the bait. Press Space when HOOK NOW appears.`);
     biteGame = null;
-    els.castButton.disabled = false;
     render();
     save();
   }
 }
 
-function strike() {
+function hookFish() {
   if (!biteGame) return;
+
   const early = biteGame.timer < biteGame.biteAt;
-  const late = biteGame.timer > biteGame.biteAt + biteGame.strikeWindow;
+  const late = biteGame.timer > biteGame.biteAt + biteGame.hookWindow;
   const target = fish[biteGame.fishId];
 
   if (early || late) {
-    addLog(early ? "Too early. The splash scared it off." : `${target.name} slipped away.`);
+    addLog(early ? "Too early. Wait for HOOK NOW." : `${target.name} slipped away.`);
     biteGame = null;
-    els.castButton.disabled = false;
     render();
     save();
     return;
@@ -284,28 +304,26 @@ function strike() {
   biteGame = null;
 }
 
-function startReel(id) {
-  const target = fish[id];
+function startReel(fishId) {
+  const target = fish[fishId];
   const rod = currentUpgrade("rod");
-  const zoneSize = Math.max(9, 27 - target.difficulty * 4.6 + rod.control * 3.5);
-  const zone = Math.random() * (100 - zoneSize);
+  const zoneSize = Math.max(14, 30 - target.difficulty * 2.8 + rod.control * 3.5);
 
   activeGame = {
-    fishId: id,
-    zone,
+    fishId,
+    fishPos: Math.random() * 70 + 15,
+    fishVelocity: (Math.random() > 0.5 ? 1 : -1) * (18 + target.difficulty * 7),
+    zone: 50 - zoneSize / 2,
     zoneSize,
-    lure: Math.random() * 74 + 13,
-    velocity: (Math.random() > 0.5 ? 1 : -1) * (15 + target.difficulty * 11),
-    progress: 8,
-    tension: 24,
+    progress: 12,
+    tension: 18,
     stamina: 100,
-    fishDrift: Math.random() * 1000,
-    burstCooldown: 0.25 + Math.random() * 0.9,
-    burst: 0
+    burstTimer: 0.5 + Math.random() * 0.8,
+    burst: 0,
+    driftSeed: Math.random() * 1000
   };
 
-  els.hookedFish.textContent = `${target.emoji} ${target.name}`;
-  addLog(`${target.name} hooked. Match its movement and keep pressure steady.`);
+  addLog(`${target.name} hooked. Move the green reel zone over the fish with A/D.`);
   render();
 }
 
@@ -315,43 +333,40 @@ function updateFishing(dt, now) {
   const rod = currentUpgrade("rod");
   const boat = currentUpgrade("boat");
   const input = (keys.right ? 1 : 0) - (keys.left ? 1 : 0);
-  const bracing = keys.right && keys.left;
-  const fishWave = Math.sin(now / (330 / target.difficulty) + game.fishDrift) * target.difficulty * 28;
-  const pull = input * 72 * rod.control;
+  const holdingBoth = keys.left && keys.right;
 
-  game.burstCooldown -= dt;
-  if (game.burstCooldown <= 0) {
-    game.burst = (Math.random() > 0.5 ? 1 : -1) * (70 + target.difficulty * 26);
-    game.burstCooldown = 0.65 + Math.random() * Math.max(0.35, 1.8 - target.difficulty * 0.25);
+  game.zone += input * 44 * rod.control * dt;
+  game.zone = Math.max(0, Math.min(100 - game.zoneSize, game.zone));
+
+  game.burstTimer -= dt;
+  if (game.burstTimer <= 0) {
+    game.burst = (Math.random() > 0.5 ? 1 : -1) * (32 + target.difficulty * 18);
+    game.burstTimer = 0.65 + Math.random() * Math.max(0.45, 1.8 - target.difficulty * 0.25);
   }
-  game.burst *= 0.92;
+  game.burst *= 0.9;
 
-  game.velocity += (fishWave + game.burst + pull) * dt;
-  game.velocity *= 0.955;
-  game.lure += game.velocity * dt * boat.speed;
+  const swim = Math.sin(now / (380 / target.difficulty) + game.driftSeed) * target.difficulty * 18;
+  game.fishVelocity += (swim + game.burst) * dt;
+  game.fishVelocity *= 0.95;
+  game.fishPos += game.fishVelocity * dt * boat.speed;
 
-  if (game.lure < 0 || game.lure > 100) {
-    game.velocity *= -0.62;
-    game.lure = Math.max(0, Math.min(100, game.lure));
-    game.tension += 16;
+  if (game.fishPos < 0 || game.fishPos > 100) {
+    game.fishVelocity *= -0.75;
+    game.fishPos = Math.max(0, Math.min(100, game.fishPos));
   }
 
-  const inZone = game.lure >= game.zone && game.lure <= game.zone + game.zoneSize;
-  const perfectCenter = game.zone + game.zoneSize / 2;
-  const centerDistance = Math.abs(game.lure - perfectCenter) / Math.max(1, game.zoneSize / 2);
-  const quality = inZone ? Math.max(0.22, 1 - centerDistance * 0.42) : 0;
+  const inZone = game.fishPos >= game.zone && game.fishPos <= game.zone + game.zoneSize;
+  const center = game.zone + game.zoneSize / 2;
+  const centerDistance = Math.abs(game.fishPos - center) / Math.max(1, game.zoneSize / 2);
+  const quality = inZone ? Math.max(0.25, 1 - centerDistance * 0.45) : 0;
 
-  game.progress += (inZone ? (15 + quality * 14) * rod.power : -18 * target.difficulty) * dt;
-  game.tension += (Math.abs(game.velocity) * 0.09 + Math.abs(input) * 10 + (bracing ? 18 : 0) - (inZone ? 11 * quality : -3)) * dt;
-  game.stamina -= (inZone ? 7.5 * quality : 1.3) * dt;
-  game.tension = Math.max(0, Math.min(100, game.tension));
-  game.stamina = Math.max(0, game.stamina);
+  game.progress += (inZone ? (16 + quality * 15) * rod.power : -13 * target.difficulty) * dt;
+  game.stamina -= (inZone ? 8 * quality : 1.2) * dt;
+  game.tension += ((holdingBoth ? 16 : 0) + Math.abs(input) * 5 + Math.abs(game.fishVelocity) * 0.035 - (inZone ? 10 * quality : -7)) * dt;
+
   game.progress = Math.max(0, Math.min(100, game.progress));
-
-  if (Math.random() < 0.019 * target.difficulty) {
-    game.zone += (Math.random() - 0.5) * (18 + target.difficulty * 8);
-    game.zone = Math.max(0, Math.min(100 - game.zoneSize, game.zone));
-  }
+  game.stamina = Math.max(0, game.stamina);
+  game.tension = Math.max(0, Math.min(100, game.tension));
 
   if (game.progress >= 100 || game.stamina <= 0) finishCatch(true);
   if (game.progress <= 0 || game.tension >= 100) finishCatch(false);
@@ -362,10 +377,9 @@ function finishCatch(success) {
   const game = activeGame;
   const target = fish[game.fishId];
   activeGame = null;
-  els.castButton.disabled = false;
 
   if (!success) {
-    addLog(`${target.name} escaped. Upgrade your rod or ease the tension.`);
+    addLog(`${target.name} escaped. Keep the fish inside the green zone.`);
     checkAchievements();
     render();
     save();
@@ -373,7 +387,10 @@ function finishCatch(success) {
   }
 
   const size = randomSize(target.size[0], target.size[1]);
-  const payout = Math.round(target.value * (0.75 + size / target.size[1] * 0.5));
+  let payout = Math.round(target.value * (0.75 + size / target.size[1] * 0.5));
+  const event = pirateEvent(payout);
+  payout = event.payout;
+
   state.coins += payout;
   state.stats.catches += 1;
   state.stats.earned += payout;
@@ -384,11 +401,26 @@ function finishCatch(success) {
     state.stats.bestName = `${target.name} (${size} lb)`;
   }
 
-  addLog(`Caught ${target.emoji} ${target.name}, ${size} lb, for ${payout} coins.`);
+  addLog(`Caught ${target.mark} ${target.name}, ${size} lb, for ${payout} coins.${event.text}`);
   revealSecrets();
   checkAchievements();
   render();
   save();
+}
+
+function pirateEvent(basePayout) {
+  const island = currentIsland();
+  if (!island.pirate || Math.random() > 0.24) return { payout: basePayout, text: "" };
+
+  state.stats.raids += 1;
+  const win = Math.random() < 0.58 + state.upgradeLevels.boat * 0.06;
+  if (win) {
+    const bonus = 90 + Math.round(Math.random() * 180);
+    return { payout: basePayout + bonus, text: ` You drove off pirates and found ${bonus} bonus coins.` };
+  }
+
+  const loss = Math.min(basePayout, 60 + Math.round(Math.random() * 120));
+  return { payout: Math.max(0, basePayout - loss), text: ` Pirates raided the deck and stole ${loss} coins.` };
 }
 
 function randomSize(min, max) {
@@ -396,9 +428,9 @@ function randomSize(min, max) {
 }
 
 function revealSecrets() {
-  const ownsMoonrunner = state.upgradeLevels.boat >= 3;
-  const rareCount = Object.keys(state.collection).filter(id => ["Legendary", "Mythic"].includes(fish[id].rarity)).length;
-  if (!state.unlockedIslands.includes("void") && ownsMoonrunner && rareCount >= 2) {
+  const ownsSecretBoat = currentUpgrade("boat").range >= 5;
+  const rareCount = Object.keys(state.collection).filter(id => fish[id] && ["Legendary", "Mythic"].includes(fish[id].rarity)).length;
+  if (!state.unlockedIslands.includes("void") && ownsSecretBoat && rareCount >= 2) {
     state.unlockedIslands.push("void");
     addLog("A moon current opened. Moonless Shoal is now on the map.");
   }
@@ -429,12 +461,10 @@ function buyUpgrade(type) {
 
 function travelTo(id) {
   const island = islands.find(item => item.id === id);
-  if (!island || activeGame) return;
+  if (!island || activeGame || biteGame) return;
 
   if (!state.unlockedIslands.includes(id)) {
-    if (state.coins < island.cost) return;
-    const requiredRange = islands.filter(item => !item.secret).findIndex(item => item.id === id) + 1;
-    if (currentUpgrade("boat").range < requiredRange) return;
+    if (island.secret || state.coins < island.cost || currentUpgrade("boat").range < island.range) return;
     state.coins -= island.cost;
     state.unlockedIslands.push(id);
     addLog(`Unlocked ${island.name}.`);
@@ -446,17 +476,24 @@ function travelTo(id) {
   save();
 }
 
+function switchTab(tabName) {
+  const tab = document.querySelector(`[data-tab="${tabName}"]`);
+  if (!tab) return;
+  document.querySelectorAll(".tab").forEach(item => item.classList.toggle("active", item === tab));
+  document.querySelectorAll(".view").forEach(item => item.classList.toggle("active", item.id === `${tabName}View`));
+}
+
 function render() {
   const island = currentIsland();
-  els.castButton.textContent = biteGame ? "Strike!" : activeGame ? "Reeling..." : "Cast Line";
+  els.castButton.textContent = biteGame ? "Space: Hook" : activeGame ? "Reeling..." : "C: Cast Line";
   els.castButton.disabled = Boolean(activeGame);
   els.currentIsland.textContent = island.name;
   els.coins.textContent = state.coins.toLocaleString();
   els.bestCatch.textContent = state.stats.bestName;
   els.flavorText.textContent = island.description;
-  els.islandView.textContent = island.emoji;
+  els.islandView.textContent = island.mark;
   els.islandView.style.setProperty("--island-color", island.color);
-  els.luckBar.style.width = `${Math.min(100, currentUpgrade("bait").luck * 42)}%`;
+  els.luckBar.style.width = `${Math.min(100, currentUpgrade("bait").luck * 38)}%`;
   els.log.innerHTML = state.log.map(item => `<p>${item}</p>`).join("");
   renderFishing();
   renderMap();
@@ -468,40 +505,41 @@ function render() {
 function renderFishing() {
   if (biteGame) {
     const waiting = biteGame.timer < biteGame.biteAt;
-    els.sweetZone.style.left = waiting ? "45%" : "34%";
-    els.sweetZone.style.width = waiting ? "10%" : "32%";
-    els.lure.style.left = waiting ? "50%" : "50%";
-    els.tensionText.textContent = waiting ? "Calm" : "Bite";
+    els.sweetZone.style.left = waiting ? "44%" : "32%";
+    els.sweetZone.style.width = waiting ? "12%" : "36%";
+    els.lure.style.left = "50%";
     return;
   }
 
   if (!activeGame) {
-    els.sweetZone.style.left = "38%";
-    els.sweetZone.style.width = "24%";
+    els.sweetZone.style.left = "35%";
+    els.sweetZone.style.width = "30%";
     els.lure.style.left = "50%";
     els.controlBar.style.width = "0%";
     els.progressText.textContent = "0%";
     els.tensionText.textContent = "0%";
-    els.hookedFish.textContent = "Waiting for a bite";
+    els.hookedFish.textContent = "Press C to cast";
     return;
   }
+
+  const target = fish[activeGame.fishId];
+  els.hookedFish.textContent = `${target.mark} ${target.name}`;
   els.sweetZone.style.left = `${activeGame.zone}%`;
   els.sweetZone.style.width = `${activeGame.zoneSize}%`;
-  els.lure.style.left = `${activeGame.lure}%`;
+  els.lure.style.left = `${activeGame.fishPos}%`;
   els.controlBar.style.width = `${activeGame.progress}%`;
   els.progressText.textContent = `${Math.round(activeGame.progress)}%`;
   els.tensionText.textContent = `${Math.round(activeGame.tension)}%`;
 }
 
 function renderMap() {
-  els.islandGrid.innerHTML = islands.map((island, index) => {
+  els.islandGrid.innerHTML = islands.map(island => {
     const unlocked = state.unlockedIslands.includes(island.id);
-    const requiredRange = island.secret ? 4 : index + 1;
-    const canUnlock = !unlocked && !island.secret && state.coins >= island.cost && currentUpgrade("boat").range >= requiredRange;
-    const lockedText = island.secret ? "Hidden route" : `${island.cost} coins • boat range ${requiredRange}`;
+    const canUnlock = !unlocked && !island.secret && state.coins >= island.cost && currentUpgrade("boat").range >= island.range;
+    const lockedText = island.secret ? "Hidden route" : `${island.cost} coins - boat range ${island.range}`;
     return `
       <article class="island-card ${state.island === island.id ? "selected" : ""} ${unlocked ? "" : "locked"}">
-        <div class="island-emoji">${unlocked ? island.emoji : "❔"}</div>
+        <div class="island-emoji">${unlocked ? island.mark : "??"}</div>
         <div>
           <h3>${unlocked ? island.name : island.secret ? "Secret Island" : island.name}</h3>
           <p>${unlocked ? island.description : lockedText}</p>
@@ -525,7 +563,7 @@ function renderShop() {
         <h3>${current.name}</h3>
         <p>${current.text}</p>
         <button ${next && state.coins >= next.cost ? "" : "disabled"} data-upgrade="${type}">
-          ${next ? `Upgrade to ${next.name} • ${next.cost}` : "Max Level"}
+          ${next ? `Upgrade to ${next.name} - ${next.cost}` : "Max Level"}
         </button>
       </article>
     `;
@@ -533,16 +571,16 @@ function renderShop() {
 }
 
 function renderCollection() {
-  const discovered = Object.keys(state.collection).length;
+  const discovered = Object.keys(state.collection).filter(id => fish[id]).length;
   const total = Object.keys(fish).length;
-  els.collectionSummary.innerHTML = `<strong>${discovered}/${total}</strong> species discovered • ${state.stats.catches} catches`;
+  els.collectionSummary.innerHTML = `<strong>${discovered}/${total}</strong> species discovered - ${state.stats.catches} catches - ${state.stats.raids} pirate raids`;
   els.fishGrid.innerHTML = Object.entries(fish).map(([id, item]) => {
     const size = state.collection[id];
     return `
       <article class="fish-card ${size ? "" : "unknown"}">
-        <div class="fish-emoji">${size ? item.emoji : "?"}</div>
+        <div class="fish-emoji">${size ? item.mark : "?"}</div>
         <h3>${size ? item.name : "Undiscovered"}</h3>
-        <p>${size ? `${item.rarity} • best ${size} lb • ${item.value} coin base` : "Explore islands and improve bait."}</p>
+        <p>${size ? `${item.rarity} - best ${size} lb - ${item.value} coin base` : "Explore islands and improve bait."}</p>
       </article>
     `;
   }).join("");
@@ -553,7 +591,7 @@ function renderAchievements() {
     const done = state.achievements[achievement.id];
     return `
       <article class="achievement ${done ? "done" : ""}">
-        <h3>${done ? "✓" : "○"} ${achievement.name}</h3>
+        <h3>${done ? "Done" : "Open"}: ${achievement.name}</h3>
         <p>${achievement.text}</p>
         <span>${achievement.reward} coin reward</span>
       </article>
@@ -566,6 +604,7 @@ function resetSave() {
   localStorage.removeItem(SAVE_KEY);
   state = structuredClone(defaultState);
   activeGame = null;
+  biteGame = null;
   render();
 }
 
@@ -574,22 +613,16 @@ document.addEventListener("click", event => {
   const travel = event.target.closest("[data-travel]");
   const upgrade = event.target.closest("[data-upgrade]");
 
-  if (tab) {
-    document.querySelectorAll(".tab").forEach(item => item.classList.toggle("active", item === tab));
-    document.querySelectorAll(".view").forEach(item => item.classList.toggle("active", item.id === `${tab.dataset.tab}View`));
-  }
+  if (tab) switchTab(tab.dataset.tab);
   if (travel) travelTo(travel.dataset.travel);
   if (upgrade) buyUpgrade(upgrade.dataset.upgrade);
 });
 
 $("#castButton").addEventListener("click", () => {
-  if (biteGame) {
-    strike();
-    return;
-  }
-  castLine();
+  if (biteGame) hookFish();
+  else castLine();
 });
-$(".track").addEventListener("click", strike);
+$(".track").addEventListener("click", hookFish);
 $("#saveButton").addEventListener("click", () => {
   save();
   addLog("Game saved.");
@@ -610,17 +643,30 @@ $("#rightButton").addEventListener("pointerdown", () => keys.right = true);
 });
 
 document.addEventListener("keydown", event => {
+  const key = event.key.toLowerCase();
   if (event.code === "Space") {
     event.preventDefault();
-    strike();
+    hookFish();
   }
-  if (event.key === "ArrowLeft" || event.key.toLowerCase() === "a") keys.left = true;
-  if (event.key === "ArrowRight" || event.key.toLowerCase() === "d") keys.right = true;
+  if (key === "c") castLine();
+  if (key === "s") {
+    save();
+    addLog("Game saved.");
+    render();
+  }
+  if (key === "m") switchTab("map");
+  if (key === "b") switchTab("shop");
+  if (key === "g") switchTab("achievements");
+  if (key === "f") switchTab("fish");
+  if (key === "l") switchTab("collection");
+  if (event.key === "ArrowLeft" || key === "a") keys.left = true;
+  if (event.key === "ArrowRight" || key === "d") keys.right = true;
 });
 
 document.addEventListener("keyup", event => {
-  if (event.key === "ArrowLeft" || event.key.toLowerCase() === "a") keys.left = false;
-  if (event.key === "ArrowRight" || event.key.toLowerCase() === "d") keys.right = false;
+  const key = event.key.toLowerCase();
+  if (event.key === "ArrowLeft" || key === "a") keys.left = false;
+  if (event.key === "ArrowRight" || key === "d") keys.right = false;
 });
 
 window.addEventListener("beforeunload", save);
