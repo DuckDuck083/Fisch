@@ -596,17 +596,38 @@ function renderMap() {
 
 function renderShop() {
   els.shopGrid.innerHTML = Object.keys(upgrades).map(type => {
-    const level = state.upgradeLevels[type];
-    const current = upgrades[type][level];
-    const next = upgrades[type][level + 1];
+    const currentLevel = state.upgradeLevels[type];
+    const nextLevel = currentLevel + 1;
+    const track = upgrades[type].map((upgrade, index) => {
+      const owned = index <= currentLevel;
+      const current = index === currentLevel;
+      const available = index === nextLevel && state.coins >= upgrade.cost;
+      const locked = index > nextLevel;
+      return `
+        <div class="pass-node ${owned ? "owned" : ""} ${current ? "current" : ""} ${available ? "available" : ""} ${locked ? "locked" : ""}">
+          <div class="node-top">
+            <span class="node-tier">Tier ${index + 1}</span>
+            <strong>${upgrade.name}</strong>
+          </div>
+          <p>${upgrade.text}</p>
+          <div class="node-bottom">
+            <span>${owned ? "Owned" : `${upgrade.cost} coins`}</span>
+            ${index === nextLevel ? `<button ${available ? "" : "disabled"} data-upgrade="${type}">Buy</button>` : ""}
+          </div>
+        </div>
+      `;
+    }).join("");
+
     return `
-      <article class="shop-card">
-        <span class="label">${type}</span>
-        <h3>${current.name}</h3>
-        <p>${current.text}</p>
-        <button ${next && state.coins >= next.cost ? "" : "disabled"} data-upgrade="${type}">
-          ${next ? `Upgrade to ${next.name} - ${next.cost}` : "Max Level"}
-        </button>
+      <article class="shop-track">
+        <div class="shop-track-head">
+          <div>
+            <span class="label">${type}</span>
+            <h3>${upgrades[type][currentLevel].name}</h3>
+          </div>
+          <strong>${currentLevel + 1}/${upgrades[type].length}</strong>
+        </div>
+        <div class="pass-track">${track}</div>
       </article>
     `;
   }).join("");
