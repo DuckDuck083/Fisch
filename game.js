@@ -134,21 +134,32 @@ const upgrades = {
     { name: "Carbon Rod", cost: 300, power: 1.18, control: 1.12, text: "A wider reel zone and better catch speed." },
     { name: "Storm Rod", cost: 950, power: 1.42, control: 1.28, text: "Keeps up with fish bursts." },
     { name: "Astral Rod", cost: 2600, power: 1.75, control: 1.55, text: "Turns impossible catches into fair fights." },
-    { name: "Captain's Harpoon", cost: 5200, power: 2.05, control: 1.72, text: "A pirate-forged rod with brutal control." }
+    { name: "Captain's Harpoon", cost: 5200, power: 2.05, control: 1.72, text: "A pirate-forged rod with brutal control." },
+    { name: "Abyss Anchor Rod", cost: 9800, power: 2.35, control: 1.95, text: "Special: huge fish lose stamina faster." }
   ],
   boat: [
     { name: "Rowboat", cost: 0, range: 1, speed: 1, text: "Enough to reach nearby coves." },
     { name: "Skiff", cost: 500, range: 2, speed: 1.08, text: "Unlocks nearby island routes." },
     { name: "Wavecutter", cost: 1500, range: 3, speed: 1.16, text: "Built for volcanic routes." },
     { name: "Moonrunner", cost: 4200, range: 4, speed: 1.25, text: "Can follow strange currents." },
-    { name: "Black Flag Galleon", cost: 7600, range: 5, speed: 1.35, text: "A pirate ship that can chase secret waters." }
+    { name: "Black Flag Galleon", cost: 7600, range: 5, speed: 1.35, text: "A pirate ship that can chase secret waters." },
+    { name: "Storm Submarine", cost: 12500, range: 6, speed: 1.5, text: "Special: faster fish tracking and future deep-sea access." }
   ],
   bait: [
     { name: "Bread Bait", cost: 0, luck: 1, text: "Simple bait for simple bites." },
     { name: "Shrimp Mix", cost: 240, luck: 1.2, text: "Better odds for uncommon catches." },
     { name: "Glow Worms", cost: 850, luck: 1.45, text: "Rare fish notice the shimmer." },
     { name: "Meteor Chum", cost: 2300, luck: 1.85, text: "Draws legends from deep water." },
-    { name: "Cursed Doubloons", cost: 5000, luck: 2.25, text: "Pirate bait that tempts mythic fish." }
+    { name: "Cursed Doubloons", cost: 5000, luck: 2.25, text: "Pirate bait that tempts mythic fish." },
+    { name: "Void Truffle", cost: 10500, luck: 2.75, text: "Special: strongest rare-fish lure in the game." }
+  ],
+  gear: [
+    { name: "Lucky Tacklebox", cost: 0, luckBonus: 0, payoutBonus: 0, tensionResist: 0, pirateBonus: 0, autoHook: 0, text: "A basic box for hooks and snacks." },
+    { name: "Gold Scale Charm", cost: 650, luckBonus: 0.15, payoutBonus: 0.08, tensionResist: 0, pirateBonus: 0, autoHook: 0, text: "Passive: slightly better luck and coin payouts." },
+    { name: "Reinforced Gloves", cost: 1400, luckBonus: 0.15, payoutBonus: 0.08, tensionResist: 0.18, pirateBonus: 0, autoHook: 0, text: "Passive: line tension rises slower while reeling." },
+    { name: "Raider Compass", cost: 3200, luckBonus: 0.25, payoutBonus: 0.12, tensionResist: 0.18, pirateBonus: 0.16, autoHook: 0, text: "Passive: better pirate raid odds and extra rare luck." },
+    { name: "Clockwork Bobber", cost: 6800, luckBonus: 0.35, payoutBonus: 0.18, tensionResist: 0.25, pirateBonus: 0.22, autoHook: 0.2, text: "Passive: sometimes hooks fish for you and boosts treasure value." },
+    { name: "Mythic Sonar", cost: 11500, luckBonus: 0.5, payoutBonus: 0.26, tensionResist: 0.3, pirateBonus: 0.28, autoHook: 0.32, text: "Passive: big luck, strong auto-hook, and richer catches." }
   ]
 };
 
@@ -168,9 +179,10 @@ const achievements = [
 
 const defaultState = {
   coins: 120,
+  testing: false,
   island: "starter",
   unlockedIslands: ["starter"],
-  upgradeLevels: { rod: 0, boat: 0, bait: 0 },
+  upgradeLevels: { rod: 0, boat: 0, bait: 0, gear: 0 },
   collection: {},
   achievements: {},
   stats: { catches: 0, casts: 0, earned: 0, bestValue: 0, bestName: "None", raids: 0 },
@@ -181,6 +193,7 @@ let state = load();
 let activeGame = null;
 let biteGame = null;
 let keys = { left: false, right: false };
+let cheatBuffer = "";
 let lastTick = performance.now();
 
 const $ = selector => document.querySelector(selector);
@@ -241,6 +254,10 @@ function currentUpgrade(type) {
   return upgrades[type][state.upgradeLevels[type]];
 }
 
+function currentGear() {
+  return currentUpgrade("gear");
+}
+
 function hasRarity(saveState, rarities) {
   return Object.keys(saveState.collection).some(id => fish[id] && rarities.includes(fish[id].rarity));
 }
@@ -252,7 +269,7 @@ function addLog(message) {
 
 function weightedFish() {
   const island = currentIsland();
-  const luck = currentUpgrade("bait").luck;
+  const luck = currentUpgrade("bait").luck + currentGear().luckBonus;
   const rarityWeight = { Common: 60, Uncommon: 27, Rare: 10, Legendary: 3, Mythic: 1, Secret: 0.35 };
   const pool = island.fish.map(id => {
     const item = fish[id];
@@ -316,6 +333,15 @@ function updateBite(dt) {
   els.progressText.textContent = "Hook";
   els.controlBar.style.width = `${Math.max(0, 100 - hookTime / biteGame.hookWindow * 100)}%`;
 
+  if (currentGear().autoHook && !biteGame.autoTried && hookTime > biteGame.hookWindow * 0.34) {
+    biteGame.autoTried = true;
+    if (Math.random() < currentGear().autoHook) {
+      addLog(`${currentGear().name} snapped the hook at the perfect moment.`);
+      hookFish();
+      return;
+    }
+  }
+
   if (hookTime > biteGame.hookWindow) {
     addLog(`${target.name} stole the bait. Press Space when HOOK NOW appears.`);
     biteGame = null;
@@ -371,6 +397,7 @@ function updateFishing(dt, now) {
   const target = fish[game.fishId];
   const rod = currentUpgrade("rod");
   const boat = currentUpgrade("boat");
+  const gear = currentGear();
   const input = (keys.right ? 1 : 0) - (keys.left ? 1 : 0);
   const holdingBoth = keys.left && keys.right;
 
@@ -400,8 +427,9 @@ function updateFishing(dt, now) {
   const quality = inZone ? Math.max(0.25, 1 - centerDistance * 0.45) : 0;
 
   game.progress += (inZone ? (16 + quality * 15) * rod.power : -13 * target.difficulty) * dt;
-  game.stamina -= (inZone ? 8 * quality : 1.2) * dt;
-  game.tension += ((holdingBoth ? 16 : 0) + Math.abs(input) * 5 + Math.abs(game.fishVelocity) * 0.035 - (inZone ? 10 * quality : -7)) * dt;
+  const heavyFishBonus = target.size[1] >= 200 && state.upgradeLevels.rod >= 5 ? 1.35 : 1;
+  game.stamina -= (inZone ? 8 * quality * heavyFishBonus : 1.2) * dt;
+  game.tension += ((holdingBoth ? 16 : 0) + Math.abs(input) * 5 + Math.abs(game.fishVelocity) * 0.035 - (inZone ? 10 * quality : -7)) * (1 - gear.tensionResist) * dt;
 
   game.progress = Math.max(0, Math.min(100, game.progress));
   game.stamina = Math.max(0, game.stamina);
@@ -426,7 +454,7 @@ function finishCatch(success) {
   }
 
   const size = randomSize(target.size[0], target.size[1]);
-  let payout = Math.round(target.value * (0.75 + size / target.size[1] * 0.5));
+  let payout = Math.round(target.value * (0.75 + size / target.size[1] * 0.5) * (1 + currentGear().payoutBonus));
   const event = pirateEvent(payout);
   payout = event.payout;
 
@@ -453,7 +481,7 @@ function pirateEvent(basePayout) {
 
   state.stats.raids += 1;
   const raid = pirateEvents[Math.floor(Math.random() * pirateEvents.length)];
-  const win = Math.random() < 0.58 + state.upgradeLevels.boat * 0.06;
+  const win = Math.random() < 0.58 + state.upgradeLevels.boat * 0.06 + currentGear().pirateBonus;
   if (win) {
     const bonus = 120 + Math.round(Math.random() * 260);
     addLog(`${raid.name}: ${raid.win}. +${bonus} coins.`);
@@ -491,8 +519,8 @@ function checkAchievements() {
 function buyUpgrade(type) {
   const nextLevel = state.upgradeLevels[type] + 1;
   const next = upgrades[type][nextLevel];
-  if (!next || state.coins < next.cost) return;
-  state.coins -= next.cost;
+  if (!next || (!state.testing && state.coins < next.cost)) return;
+  if (!state.testing) state.coins -= next.cost;
   state.upgradeLevels[type] = nextLevel;
   addLog(`Upgraded ${type} to ${next.name}.`);
   revealSecrets();
@@ -506,8 +534,8 @@ function travelTo(id) {
   if (!island || activeGame || biteGame) return;
 
   if (!state.unlockedIslands.includes(id)) {
-    if (island.secret || state.coins < island.cost || currentUpgrade("boat").range < island.range) return;
-    state.coins -= island.cost;
+    if (island.secret || (!state.testing && state.coins < island.cost) || currentUpgrade("boat").range < island.range) return;
+    if (!state.testing) state.coins -= island.cost;
     state.unlockedIslands.push(id);
     addLog(`Unlocked ${island.name}.`);
   }
@@ -525,17 +553,26 @@ function switchTab(tabName) {
   document.querySelectorAll(".view").forEach(item => item.classList.toggle("active", item.id === `${tabName}View`));
 }
 
+function activateTestingMode() {
+  if (state.testing) return;
+  state.testing = true;
+  state.coins = Math.max(state.coins, 999999);
+  addLog("Testing mode enabled: infinite coins and free upgrades.");
+  render();
+  save();
+}
+
 function render() {
   const island = currentIsland();
   els.castButton.textContent = biteGame ? "Space: Hook" : activeGame ? "Reeling..." : "C: Cast Line";
   els.castButton.disabled = Boolean(activeGame);
   els.currentIsland.textContent = island.name;
-  els.coins.textContent = state.coins.toLocaleString();
+  els.coins.textContent = state.testing ? "INF" : state.coins.toLocaleString();
   els.bestCatch.textContent = state.stats.bestName;
   els.flavorText.textContent = island.description;
   els.islandView.textContent = island.mark;
   els.islandView.style.setProperty("--island-color", island.color);
-  els.luckBar.style.width = `${Math.min(100, currentUpgrade("bait").luck * 38)}%`;
+  els.luckBar.style.width = `${Math.min(100, (currentUpgrade("bait").luck + currentGear().luckBonus) * 34)}%`;
   els.log.innerHTML = state.log.map(item => `<p>${item}</p>`).join("");
   renderFishing();
   renderMap();
@@ -601,7 +638,7 @@ function renderShop() {
     const track = upgrades[type].map((upgrade, index) => {
       const owned = index <= currentLevel;
       const current = index === currentLevel;
-      const available = index === nextLevel && state.coins >= upgrade.cost;
+      const available = index === nextLevel && (state.testing || state.coins >= upgrade.cost);
       const locked = index > nextLevel;
       return `
         <div class="pass-node ${owned ? "owned" : ""} ${current ? "current" : ""} ${available ? "available" : ""} ${locked ? "locked" : ""}">
@@ -611,7 +648,7 @@ function renderShop() {
           </div>
           <p>${upgrade.text}</p>
           <div class="node-bottom">
-            <span>${owned ? "Owned" : `${upgrade.cost} coins`}</span>
+            <span>${owned ? "Owned" : state.testing ? "Free in testing" : `${upgrade.cost} coins`}</span>
             ${index === nextLevel ? `<button ${available ? "" : "disabled"} data-upgrade="${type}">Buy</button>` : ""}
           </div>
         </div>
@@ -707,6 +744,10 @@ $("#rightButton").addEventListener("pointerdown", () => keys.right = true);
 
 document.addEventListener("keydown", event => {
   const key = event.key.toLowerCase();
+  if (key.length === 1) {
+    cheatBuffer = `${cheatBuffer}${key}`.slice(-12);
+    if (cheatBuffer.endsWith("mustardmango")) activateTestingMode();
+  }
   if (event.code === "Space") {
     event.preventDefault();
     hookFish();
